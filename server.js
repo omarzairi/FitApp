@@ -1,6 +1,9 @@
-import express from "express";
-import cors from "cors";
-import connectDB from "./config/mongoDB.js";
+
+const express=require('express');
+const cors=require('cors');
+const connectDB=require('./config/mongoDB.js');
+
+
 const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(express.static("public"));
@@ -17,3 +20,6 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
 });
+
+const userController=require('./controller/userController')
+app.use("/api/users",userController);
