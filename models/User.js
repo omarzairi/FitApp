@@ -32,11 +32,13 @@ const userSchema = mongoose.Schema(
         },
         poids:{
             type:Number,
+            required:true,
             
             
         },
         taille:{
             type:Number,
+            required:true,
             
             
         },
@@ -44,11 +46,7 @@ const userSchema = mongoose.Schema(
             type: Date,
             default: Date.now
         },
-        role:
-        {
-            type:String,
-            required:true,
-        }
+        
     }
     
 );
