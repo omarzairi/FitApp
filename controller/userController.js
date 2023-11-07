@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const express = require("express");
 const userController=express.Router();
 const jwt=require('../config/token');
-
+const protectUser = require('../middleware/userAuth.js')
 userController.post('/addUser',asyncHandler(async (req,res)=>{
     const user = await userService.createUser(
         req.body.nom,
@@ -27,7 +27,7 @@ userController.post('/loginUser',asyncHandler(async (req,res)=>{
     );
     res.status(200).json(user);
 }));
-userController.get('/getUserById/:id',asyncHandler(async (req,res)=>{
+userController.get('/getUserById/:id',protectUser,asyncHandler(async (req,res)=>{
     const user = await userService.getUserById(
         req.params.id
     );
