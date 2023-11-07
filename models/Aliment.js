@@ -25,6 +25,10 @@ const alimentSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  image: {
+    type: String,
+    required: false,
+  },
   servingSize: {
     type: Number,
     required: true,
