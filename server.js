@@ -1,8 +1,6 @@
-
-const express=require('express');
-const cors=require('cors');
-const connectDB=require('./config/mongoDB.js');
-
+const express = require("express");
+const cors = require("cors");
+const connectDB = require("./config/mongoDB.js");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -21,5 +19,7 @@ app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
 });
 
-const userController=require('./controller/userController')
-app.use("/api/users",userController);
+const userController = require("./controller/userController");
+app.use("/api/users", userController);
+const alimentController = require("./controller/alimentController");
+app.use("/api/aliments", alimentController);
