@@ -27,3 +27,6 @@ app.use("/api/aliments", alimentController);
 
 const consumptionController = require("./controller/consumptionController");
 app.use("/api/consumptions", consumptionController);
+
+const objectifController = require("./controller/objectifController");
+app.use("/api/objectifs", objectifController);

@@ -38,6 +38,7 @@ userController.get(
 );
 userController.put(
   "/updateUser/:id",
+  protectUser,
   asyncHandler(async (req, res) => {
     const user = await userService.updateUser(
       req.params.id,

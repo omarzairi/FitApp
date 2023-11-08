@@ -6,7 +6,7 @@ const userService = {
     email,
     password,
     age,
-    sexe,
+    sex,
     poids,
     taille,
     role
@@ -22,7 +22,7 @@ const userService = {
         email,
         password,
         age,
-        sexe,
+        sex,
         poids,
         taille,
         role,
@@ -64,10 +64,10 @@ const userService = {
     email,
     password,
     age,
-    sexe,
+    sex,
     poids,
     taille,
-    role
+    
   ) {
     try {
       const user = await User.findById(id);
@@ -79,10 +79,10 @@ const userService = {
       user.email = email;
       user.password = password;
       user.age = age;
-      user.sexe = sexe;
+      user.sex = sex;
       user.poids = poids;
       user.taille = taille;
-      user.role = role;
+      
       const savedUser = await user.save();
       return savedUser;
     } catch (error) {
