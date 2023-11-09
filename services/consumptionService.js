@@ -2,27 +2,44 @@ const Aliment = require("../models/Aliment");
 const Consumption = require("../models/Consumption");
 
 const consumptionService = {
-  async createConsumption({ aliments, user, quantity, consumptionDate, mealType }) {
-    const consumption = await Consumption.create({
-      aliments,
-      user,
-      quantity,
-      consumptionDate,
-      mealType,
+
+  async createConsumption(consumptionData) {
+    const newConsumption = new Consumption(consumptionData);
+    newConsumption.total = 0;
+    newConsumption.aliments.forEach((aliment) => {
+      newConsumption.total += aliment.quantity * aliment.aliment.calories;
     });
-    return consumption; 
+
+    return await newConsumption.save();
   },
-  async addAlimentToAConsumption(consumptionId, alimentId,quantity) {
-    const consumption=await Consumption.findById(consumptionId);
-    if(consumption!=null && Aliment.findById(alimentId)){
-    const objet={aliment:alimentId,quantity:quantity};
-    consumption.aliments.push(objet);
-    return await consumption.save();
-  }
-  else {
-    console.log(consumptionId,"   ",alimentId,"   ",quantity)
-    throw new Error("Consumption or aliment not found");
-  }
+  async addAlimentToAConsumption(consumptionId, alimentId, quantity) {
+    console.log("you are in addAlimentToAConsumption")
+    const consumption = await Consumption.findById(consumptionId);
+    const aliment = await Aliment.findById(alimentId);
+console.log(consumption,"0000000",aliment)
+
+    if (consumption != null && aliment != null) {
+      const objet = { aliment: alimentId, quantity: quantity };
+
+
+      if (consumption.aliments.find((alimenttab) =>  alimenttab.aliment == alimentId)!=undefined) {
+        consumption.aliments.forEach((alimenttab) => {
+          if (alimenttab.aliment == alimentId) {
+            alimenttab.quantity += quantity;
+          }
+        });
+      }
+      else {
+        consumption.aliments.push(objet);
+      }
+      consumption.total += aliment.calories * quantity;
+      return await consumption.save();
+    }
+
+    else {
+      console.log(consumptionId, "   ", alimentId, "   ", quantity)
+      throw new Error("Consumption or aliment not found");
+    }
 
   },
   async getConsumptionById(consumptionId) {
@@ -32,7 +49,7 @@ const consumptionService = {
     if (!consumption) {
       throw new Error("Consumption not found");
     }
-    return consumption; 
+    return consumption;
   },
 
   async getAllConsumptions() {
