@@ -72,6 +72,27 @@ const coachService = {
       throw error;
     }
   },
+  async getAllCoaches() {
+    try {
+      const coaches = await Coach.find();
+      return coaches;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async deleteCoach(id) {
+    try {
+      const coach = await Coach.findById(id);
+      if (!coach) {
+        throw new Error("Coach not found");
+      }
+
+      await coach.remove();
+      return { message: "Coach deleted successfully" };
+    } catch (error) {
+      throw error;
+    }
+  },
 };
 
 module.exports = coachService;

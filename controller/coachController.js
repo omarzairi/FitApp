@@ -57,5 +57,19 @@ coachController.put(
     res.status(200).json(coach);
   })
 );
+coachController.get(
+  "/getAllCoaches",
+  asyncHandler(async (req, res) => {
+    const coaches = await coachService.getAllCoaches();
+    res.status(200).json(coaches);
+  })
+);
+coachController.delete(
+  "/deleteCoach/:id",
+  asyncHandler(async (req, res) => {
+    const result = await coachService.deleteCoach(req.params.id);
+    res.status(200).json(result);
+  })
+);
 
 module.exports = coachController;
