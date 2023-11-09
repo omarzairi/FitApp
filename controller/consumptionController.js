@@ -33,6 +33,22 @@ consumptionController.get(
   })
 );
 
+consumptionController.put(
+  "/:id/aliment/:alimentId",
+  asyncHandler(async (req, res) => {
+    try {
+      const consumption = await consumptionService.addAlimentToAConsumption(
+        req.params.id,
+        req.params.alimentId,
+        req.body.quantity
+      );
+      res.status(200).json(consumption);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  })
+);
+
 consumptionController.post(
   "/",
   asyncHandler(async (req, res) => {

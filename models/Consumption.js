@@ -1,20 +1,23 @@
 const mongoose = require("mongoose");
 const consumptionSchema = new mongoose.Schema({
-  aliment: {
+  aliments: [{
+    aliment:{
+
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "Aliment",
-  },
+    ref: "Aliment"},
+    quantity: {
+      type: Number,
+    
+  },}
+],
   user: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  consommationDate: {
+ 
+  consumptionDate: {
     type: Date,
     required: true,
   },

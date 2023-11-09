@@ -1,15 +1,29 @@
+const Aliment = require("../models/Aliment");
 const Consumption = require("../models/Consumption");
 
 const consumptionService = {
-  async createConsumption({ aliment, user, quantity, consommationDate, mealType }) {
+  async createConsumption({ aliments, user, quantity, consumptionDate, mealType }) {
     const consumption = await Consumption.create({
-      aliment,
+      aliments,
       user,
       quantity,
-      consommationDate,
+      consumptionDate,
       mealType,
     });
     return consumption; 
+  },
+  async addAlimentToAConsumption(consumptionId, alimentId,quantity) {
+    const consumption=await Consumption.findById(consumptionId);
+    if(consumption!=null && Aliment.findById(alimentId)){
+    const objet={aliment:alimentId,quantity:quantity};
+    consumption.aliments.push(objet);
+    return await consumption.save();
+  }
+  else {
+    console.log(consumptionId,"   ",alimentId,"   ",quantity)
+    throw new Error("Consumption or aliment not found");
+  }
+
   },
   async getConsumptionById(consumptionId) {
     const consumption = await Consumption.findById(consumptionId).select(
@@ -20,6 +34,7 @@ const consumptionService = {
     }
     return consumption; 
   },
+
   async getAllConsumptions() {
     const consumptions = await Consumption.find();
     return consumptions.map((consumption) => consumption.toObject());
