@@ -21,6 +21,8 @@ app.listen(PORT, () => {
 
 const userController = require("./controller/userController");
 app.use("/api/users", userController);
+const coachedController = require("./controller/coachController");
+app.use("/api/coaches",coachController);
 
 const alimentController = require("./controller/alimentController");
 app.use("/api/aliments", alimentController);
