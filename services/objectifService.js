@@ -5,6 +5,14 @@ const userService = require('../services/userService');
 const objectifService = {
         async createObjectif({ user, poidsObj,  poidsParSemaine, actPhysique }) {
             const userFound = await userService.getUserById(user);
+            try {
+                const oldObjectif = await Objectif.findOne({ user });
+                if (oldObjectif) {
+                    throw new Error('Objectif already exists');
+                }
+            } catch (error) {
+                throw error;
+            }
             let BMR=0;
             if(userFound.sex=="Male"){
                  BMR= 10*poidsObj + 6.25*userFound.taille - 5*userFound.age + 5;
@@ -41,7 +49,7 @@ const objectifService = {
                      duree= ((poidsObj-userFound.poids)/poidsParSemaine)*7;
                      calories= TDEE+plusOuMoinsCaloriesParJour;
                 }
-
+            try{
             const objectif = await Objectif.create({
                 user,
                 poidsObj,
@@ -52,6 +60,9 @@ const objectifService = {
                 calories:calories
             });
             return objectif;
+        }
+        catch(error){
+            throw new Error("Error while creating objectif");}
         },
         async getObjectifByUserId(userId) {
             const objectif = await Objectif.findOne({ user: userId });

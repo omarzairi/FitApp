@@ -30,7 +30,7 @@ const userService = {
       const savedUser = await newUser.save();
       return savedUser;
     } catch (error) {
-      throw error;
+      throw new Error("Error creating user");
     }
   },
   async loginUser(email, password) {

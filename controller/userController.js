@@ -49,8 +49,8 @@ userController.put(
       req.body.age,
       req.body.sex,
       req.body.poids,
-      req.body.taille,
-      req.body.role
+      req.body.taille
+     
     );
     res.status(200).json(user);
   })
