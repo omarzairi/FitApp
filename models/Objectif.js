@@ -11,11 +11,11 @@ const ObjectifSchema=new mongoose.Schema({
     },
     date:{
         type:Date,
-        required:true
+        
     },
     duree:{
         type:Number,
-        required:true
+        
     },
     actPhysique:{
         type:String,
@@ -28,7 +28,7 @@ const ObjectifSchema=new mongoose.Schema({
     },
     calories:{
         type:Number,
-        required:true
+       
         
     },
 });

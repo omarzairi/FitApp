@@ -32,3 +32,6 @@ app.use("/api/consumptions", consumptionController);
 
 const objectifController = require("./controller/objectifController");
 app.use("/api/objectifs", objectifController);
+
+const messageControl = require("./controller/messageController");
+app.use("/api/messages", messageControl);
