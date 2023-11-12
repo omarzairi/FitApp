@@ -32,7 +32,7 @@ const coachSchema = mongoose.Schema(
         },
         image:{
             type:String,
-            required:true,
+            
         }
     }
     
