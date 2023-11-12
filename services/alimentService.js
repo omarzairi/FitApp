@@ -21,7 +21,7 @@ class AlimentService {
   }
 
   async deleteAliment(alimentId) {
-    return await Aliment.findByIdAndDelete(alimentId);
+    return await Aliment.findByIdAndRemove(alimentId);
   }
   async searchAliment(searchCriteria) {
     const query = {};

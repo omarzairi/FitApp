@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const alimentSchema = new mongoose.Schema({
+  idInApi: {
+    type: String,
+    required: false,
+  },
   name: {
     type: String,
     required: true,

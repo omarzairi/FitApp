@@ -22,7 +22,7 @@ app.listen(PORT, () => {
 const userController = require("./controller/userController");
 app.use("/api/users", userController);
 const coachController = require("./controller/coachController");
-app.use("/api/coaches",coachController);
+app.use("/api/coaches", coachController);
 
 const alimentController = require("./controller/alimentController");
 app.use("/api/aliments", alimentController);
@@ -32,5 +32,3 @@ app.use("/api/consumptions", consumptionController);
 
 const objectifController = require("./controller/objectifController");
 app.use("/api/objectifs", objectifController);
-
-

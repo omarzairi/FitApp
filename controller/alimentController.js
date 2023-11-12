@@ -20,7 +20,10 @@ alimentController.get(
   "/:id",
   asyncHandler(async (req, res) => {
     try {
-      const aliment = await alimentService.getAlimentById(req.params.id);
+      const aliment = await alimentService.getAlimentById(
+        req.params.id.toString()
+      );
+      console.log(aliment);
       res.status(200).json(aliment);
     } catch (error) {
       res.status(500).json({
@@ -62,7 +65,10 @@ alimentController.delete(
   asyncHandler(async (req, res) => {
     try {
       await alimentService.deleteAliment(req.params.id);
-      res.status(204).end();
+
+      res.status(200).json({
+        message: "Aliment deleted successfully",
+      });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

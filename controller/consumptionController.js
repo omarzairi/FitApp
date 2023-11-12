@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const express = require("express");
-const consumptionService = require('../services/consumptionService');
+const consumptionService = require("../services/consumptionService");
+const protectUser = require("../middleware/userAuth");
 const consumptionController = express.Router();
 
 consumptionController.get(
@@ -19,7 +20,9 @@ consumptionController.get(
   "/:id",
   asyncHandler(async (req, res) => {
     try {
-      const consumption = await consumptionService.getConsumptionById(req.params.id);
+      const consumption = await consumptionService.getConsumptionById(
+        req.params.id
+      );
       if (!consumption) {
         res.status(404).json({
           message: "Consumption doesn't exist",
@@ -51,9 +54,12 @@ consumptionController.put(
 
 consumptionController.post(
   "/",
+  protectUser,
   asyncHandler(async (req, res) => {
     try {
-      const newConsumption = await consumptionService.createConsumption(req.body);
+      const newConsumption = await consumptionService.createConsumption(
+        req.body
+      );
       res.status(201).json(newConsumption);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -82,6 +88,20 @@ consumptionController.delete(
     try {
       await consumptionService.deleteConsumption(req.params.id);
       res.status(204).end();
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  })
+);
+
+consumptionController.get(
+  "/nutritionFactsToday/:user",
+  asyncHandler(async (req, res) => {
+    try {
+      const nutritionFacts = await consumptionService.getNutritionFactsToday(
+        req.params.user
+      );
+      res.status(200).json(nutritionFacts);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
