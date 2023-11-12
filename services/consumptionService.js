@@ -67,9 +67,14 @@ const consumptionService = {
 
   async getNutritionFactsToday(user) {
     const today = new Date();
-
+    const todaysring =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
     const consumptions = await Consumption.find({
-      consumptionDate: { $gte: today },
+      consumptionDate: { $gte: todaysring },
       user: user.toString(),
     });
 
@@ -79,7 +84,6 @@ const consumptionService = {
     let totalFat = 0;
     let totalSugar = 0;
     let totalServingSize = 0;
-
     await Promise.all(
       consumptions.map(async (consumption) => {
         totalCalories += consumption.total;
@@ -87,6 +91,7 @@ const consumptionService = {
         await Promise.all(
           consumption.aliments.map(async (aliment) => {
             const alimentData = await Aliment.findById(aliment.aliment);
+            console.log(alimentData);
             totalProtein += alimentData.protein * aliment.quantity;
             totalCarbs += alimentData.carbs * aliment.quantity;
             totalFat += alimentData.fat * aliment.quantity;
