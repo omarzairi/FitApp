@@ -13,10 +13,10 @@ userController.post(
       req.body.email,
       req.body.password,
       req.body.age,
-      req.body.sexe,
+      req.body.sex,
       req.body.poids,
       req.body.taille,
-      req.body.role
+      
     );
     res.status(200).json({ ...user._doc, token: jwt(user) });
   })
@@ -47,7 +47,7 @@ userController.put(
       req.body.email,
       req.body.password,
       req.body.age,
-      req.body.sexe,
+      req.body.sex,
       req.body.poids,
       req.body.taille,
       req.body.role

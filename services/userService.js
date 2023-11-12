@@ -8,8 +8,8 @@ const userService = {
     age,
     sex,
     poids,
-    taille,
-    role
+    taille
+    
   ) {
     try {
       const oldUser = await User.findOne({ email });
@@ -25,7 +25,6 @@ const userService = {
         sex,
         poids,
         taille,
-        role,
         date: Date.now(),
       });
       const savedUser = await newUser.save();
