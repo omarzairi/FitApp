@@ -11,7 +11,7 @@ const userService = {
     taille
     
   ) {
-    try {
+    
       const oldUser = await User.findOne({ email });
       if (oldUser) {
         throw new Error("User already exists");
@@ -29,9 +29,7 @@ const userService = {
       });
       const savedUser = await newUser.save();
       return savedUser;
-    } catch (error) {
-      throw new Error("Error creating user");
-    }
+    
   },
   async loginUser(email, password) {
     try {
@@ -46,15 +44,13 @@ const userService = {
     }
   },
   async getUserById(id) {
-    try {
+    
       const user = await User.findById(id);
       if (!user) {
         throw new Error("User not found");
       }
       return user;
-    } catch (error) {
-      throw error;
-    }
+    
   },
   async updateUser(
     id,
@@ -68,7 +64,7 @@ const userService = {
     taille,
     
   ) {
-    try {
+    
       const user = await User.findById(id);
       if (!user) {
         throw new Error("User not found");
@@ -84,9 +80,7 @@ const userService = {
       
       const savedUser = await user.save();
       return savedUser;
-    } catch (error) {
-      throw error;
-    }
+    
   },
 };
 module.exports = userService;
