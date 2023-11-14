@@ -57,7 +57,7 @@ messageControl.post(
   protectUser,
   asyncHandler(async (req, res) => {
     try {
-      const  user= await User.findById(req.user);
+      const user = await User.findById(req.user);
       const from = user._id;
       const to = req.body.to;
       const messages = await Message.find({
@@ -100,7 +100,6 @@ messageControl.post(
   })
 );
 
-
 //delete all
 messageControl.delete(
   "/deleteAll",
@@ -113,6 +112,42 @@ messageControl.delete(
         return res.json({ msg: "Failed to delete messages from the database" });
     } catch (err) {
       console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  })
+);
+
+messageControl.get(
+  "/getMyLatestConvos",
+  protectUser,
+  asyncHandler(async (req, res) => {
+    try {
+      const user = await User.findById(req.user);
+      const from = user._id;
+      const messages = await Message.find({
+        users: { $in: [from.toString()] },
+      }).sort({ updatedAt: -1 });
+      const uniqueUsers = [];
+      const uniqueUsersMessages = [];
+      messages.forEach((msg) => {
+        if (!uniqueUsers.includes(msg.users[1])) {
+          uniqueUsers.push(msg.users[1]);
+          uniqueUsersMessages.push(msg);
+        }
+      });
+      const uniqueUsersMessagesWithNames = await Promise.all(
+        uniqueUsersMessages.map(async (msg) => {
+          const user = await Coach.findById(msg.users[1]);
+          return {
+            name: user.name,
+            message: msg.message.text,
+            fromSelf: msg.sender.toString() === from.toString() ? true : false,
+            timestamp: msg.updatedAt,
+          };
+        })
+      );
+      res.json(uniqueUsersMessagesWithNames);
+    } catch (err) {
       res.status(500).json({ message: "Internal server error" });
     }
   })
