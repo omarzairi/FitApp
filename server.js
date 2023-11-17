@@ -15,10 +15,6 @@ app.get("/", (req, res) => {
   res.send("<center><b>Hello, Welcome To FitApp!</b></center>");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening at http://localhost:${PORT}`);
-});
-
 const userController = require("./controller/userController");
 app.use("/api/users", userController);
 const coachController = require("./controller/coachController");
@@ -36,7 +32,11 @@ app.use("/api/objectifs", objectifController);
 const messageControl = require("./controller/messageController");
 app.use("/api/messages", messageControl);
 
-const server = app.listen(PORT, console.log("app running...."));
+const server = app.listen(
+  PORT,
+  console.log(`Server listening at http://localhost:${PORT}`)
+);
+
 const socket = require("socket.io");
 const io = socket(server, {
   cors: {
