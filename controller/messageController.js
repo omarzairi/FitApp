@@ -139,7 +139,9 @@ messageControl.get(
         uniqueUsersMessages.map(async (msg) => {
           const user = await Coach.findById(msg.users[1]);
           return {
-            name: user.name,
+            id: user._id,
+            fullName: user.prenom + " " + user.nom,
+            image: user.image,
             message: msg.message.text,
             fromSelf: msg.sender.toString() === from.toString() ? true : false,
             timestamp: msg.updatedAt,

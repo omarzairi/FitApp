@@ -12,7 +12,7 @@ app.use(express.json());
 connectDB();
 
 app.get("/", (req, res) => {
-  res.send("<center><b>Hello 3ASISOS Welcome To FitApp!</b></center>");
+  res.send("<center><b>Hello, Welcome To FitApp!</b></center>");
 });
 
 app.listen(PORT, () => {
@@ -35,3 +35,30 @@ app.use("/api/objectifs", objectifController);
 
 const messageControl = require("./controller/messageController");
 app.use("/api/messages", messageControl);
+
+const server = app.listen(PORT, console.log("app running...."));
+const socket = require("socket.io");
+const io = socket(server, {
+  cors: {
+    origin: "*",
+    credentials: true,
+  },
+});
+global.onlineUsers = new Map();
+io.on("connection", (socket) => {
+  global.chatSocket = socket;
+  socket.on("add-user", (userId) => {
+    onlineUsers.set(userId, socket.id);
+  });
+
+  socket.on("send-msg", (data) => {
+    const sendUserSocket = onlineUsers.get(data.to);
+    if (sendUserSocket) {
+      socket.broadcast.emit("msg-recieve", {
+        from: data.from,
+        to: data.to,
+        message: data.msg,
+      });
+    }
+  });
+});
