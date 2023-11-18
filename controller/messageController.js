@@ -154,4 +154,45 @@ messageControl.get(
     }
   })
 );
+
+messageControl.get(
+  "/getCoachLatestConvos",
+  protectCoach,
+  asyncHandler(async (req, res) => {
+    try {
+      const coach = await Coach.findById(req.coach);
+
+      const from = coach._id;
+      const messages = await Message.find({
+        users: { $in: [from.toString()] },
+      }).sort({ updatedAt: -1 });
+      const uniqueUsers = [];
+      const uniqueUsersMessages = [];
+      messages.forEach((msg) => {
+        if (!uniqueUsers.includes(msg.users[1])) {
+          uniqueUsers.push(msg.users[1]);
+          uniqueUsersMessages.push(msg);
+        }
+      });
+      const uniqueUsersMessagesWithNames = await Promise.all(
+        uniqueUsersMessages.map(async (msg) => {
+          const user = await User.findById(msg.users[0]);
+          return {
+            id: user._id,
+            fullName: user.prenom + " " + user.nom,
+            image: user.image,
+            message: msg.message.text,
+            fromSelf: msg.sender.toString() === from.toString() ? true : false,
+            timestamp: msg.updatedAt,
+          };
+        })
+      );
+      res.json(uniqueUsersMessagesWithNames);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  })
+);
+
 module.exports = messageControl;
