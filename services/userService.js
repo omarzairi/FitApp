@@ -54,14 +54,7 @@ const userService = {
   },
   async updateUser(
     id,
-    nom,
-    prenom,
-    email,
-    password,
-    age,
-    sex,
-    poids,
-    taille,
+    data
     
   ) {
     
@@ -69,18 +62,11 @@ const userService = {
       if (!user) {
         throw new Error("User not found");
       }
-      user.nom = nom;
-      user.prenom = prenom;
-      user.email = email;
-      user.password = password;
-      user.age = age;
-      user.sex = sex;
-      user.poids = poids;
-      user.taille = taille;
       
-      const savedUser = await user.save();
-      return savedUser;
-    
+      
+      return await User.findByIdAndUpdate(id,data,{
+      new: true,
+    });
   },
 };
 module.exports = userService;
