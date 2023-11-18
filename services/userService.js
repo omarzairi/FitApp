@@ -74,6 +74,19 @@ const userService = {
       throw new Error("User not found");
     }
     return await User.findByIdAndDelete(id);
+  },
+  async changePassword(id, data) {
+    const user= await User.findById(id);
+    if(!user){
+      throw new Error("User not found");
+    }
+    if(user.password !== data.oldPassword){
+      throw new Error("Old password is incorrect");
+    }
+    return await User.findByIdAndUpdate(id, {password: data.newPassword}, {
+      new: true,
+    });
   }
+
 };
 module.exports = userService;
