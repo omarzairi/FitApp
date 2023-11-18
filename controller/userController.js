@@ -57,14 +57,14 @@ userController.put(
     try {
       const user = await userService.updateUser(
         req.params.id,
-        req.body.nom,
-        req.body.prenom,
-        req.body.email,
-        req.body.password,
-        req.body.age,
-        req.body.sex,
-        req.body.poids,
-        req.body.taille
+        req.body
+        
+        
+        
+        
+        
+        
+        
       );
       res.status(200).json(user);
     } catch (error) {
