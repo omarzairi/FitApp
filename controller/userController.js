@@ -85,4 +85,19 @@ userController.get(
     }
   })
 );
+
+userController.delete(
+  "/deleteUser/:id",
+  protectUser,
+  asyncHandler(async (req, res) => {
+    try {
+      const user = await userService.deleteUser(req.params.id);
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(400).json({ message: "User not found" });
+    }
+  })
+);
+
+
 module.exports = userController;
