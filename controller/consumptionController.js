@@ -94,12 +94,12 @@ consumptionController.delete(
   })
 );
 
-consumptionController.get(
+consumptionController.post(
   "/nutritionFactsToday/:user",
   asyncHandler(async (req, res) => {
     try {
       const nutritionFacts = await consumptionService.getNutritionFactsToday(
-        req.params.user
+        req.params.user,req.body.date
       );
       res.status(200).json(nutritionFacts);
     } catch (error) {
