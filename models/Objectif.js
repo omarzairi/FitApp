@@ -27,9 +27,7 @@ const ObjectifSchema=new mongoose.Schema({
         required:true
     },
     calories:{
-        type:Number,
-       
-        
+        type:Number,  
     },
 });
 const Objectif=mongoose.model("Objectif",ObjectifSchema);
