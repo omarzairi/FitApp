@@ -67,6 +67,21 @@ const objectifService = {
                 throw new Error('Objectif not found');
             }
             return objectif;
+        }
+        ,
+        async updateObjectif(
+            id,
+            data
+        ) {
+            const objectif = await Objectif.findById(id);
+            if (!objectif) {
+                throw new Error('Objectif not found');
+            }
+            const updatedObjectif = await Objectif.findByIdAndUpdate(id, data, { new: true });
+            return updatedObjectif;
         },
+        
+        
+        
 }
 module.exports = objectifService;
