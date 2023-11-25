@@ -85,7 +85,7 @@ const consumptionService = {
           "-" +
           today.getDate().toString().padStart(2, "0");
     
-        const meals = ["Breakfast", "Lunch", "Snacks", "Dinner"];
+        const meals = ["breakfast", "lunch", "snacks", "dinner"];
 
         let consumptions = await Consumption.find({
           consumptionDate: { $gte: todaysring },
