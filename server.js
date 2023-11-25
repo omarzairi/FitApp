@@ -32,6 +32,9 @@ app.use("/api/objectifs", objectifController);
 const messageControl = require("./controller/messageController");
 app.use("/api/messages", messageControl);
 
+const progressController = require("./controller/progressController");
+app.use("/api/progress", progressController);
+
 const server = app.listen(
   PORT,
   console.log(`Server listening at http://localhost:${PORT}`)
