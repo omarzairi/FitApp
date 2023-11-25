@@ -36,8 +36,7 @@ consumptionController.get(
   })
 );
 
-consumptionController.get("/getTodayConsumptions", asyncHandler(async (req, res) => {
-
+consumptionController.post("/getTodayConsumptions", asyncHandler(async (req, res) => {
   try{
     const consumptions = await consumptionService.getConsumptionsByDate(req.body.user,req.body.date);
     res.status(200).json(consumptions);
