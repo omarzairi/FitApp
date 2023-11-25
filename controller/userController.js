@@ -8,12 +8,12 @@ userController.post(
   "/addUser",
   asyncHandler(async (req, res) => {
     try {
-      const user = await userService.createUser(
-        req.body
-      );
-      res.status(200).json({ ...user._doc, token: jwt(user) });
+      const user = await userService.createUser(req.body);
+      const token = jwt(user);
+      res.status(200).json({ user: { ...user._doc, token } });
     } catch (error) {
-      res.status(400).json({ message: "User already exists" });
+      console.error(error); // Log the actual error for debugging purposes
+      res.status(400).json({ message: error.message || "Error adding user" });
     }
   })
 );
@@ -27,7 +27,7 @@ userController.post(
       );
       res.status(200).json({ user: user, token: jwt(user) });
     } catch (error) {
-      res.status(400).json({ message: "User not found" });
+      res.status(400).json({ message:"User already exists" });
     }
   })
 );

@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const serviceProgress=require("../services/progressService");
+
 
 const userService = {
   async createUser(
@@ -11,12 +11,12 @@ const userService = {
       if (oldUser) {
         throw new Error("User already exists");
       }
-      const newUser = await User.create({
-        data,
-        date: Date.now(),
-      });
+      const newUser = await User.create(
+        data
+        
+      );
       const savedUser = await newUser.save();
-      await serviceProgress.createProgress({user:savedUser._id,listePoids:[{poids:savedUser.poids,date:Date.now()}]});
+     
      
       return savedUser;
     
