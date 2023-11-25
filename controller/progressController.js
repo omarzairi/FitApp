@@ -13,7 +13,7 @@ progressController.post('/addProgress',asyncHandler(async(req,res)=>{
     }
 }));
 
-progressController.post('/addProgressToAUser/:id',asyncHandler(async(req,res)=>{
+progressController.put('/addProgressToAUser/:id',asyncHandler(async(req,res)=>{
     try{
         const progress=await progressService.addProgressToAUser(req.params.id,req.body);
     res.status(200).json(progress);
