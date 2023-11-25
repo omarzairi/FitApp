@@ -35,6 +35,9 @@ app.use("/api/messages", messageControl);
 const progressController = require("./controller/progressController");
 app.use("/api/progress", progressController);
 
+const personalizedMealController = require("./controller/personalizedMealController");
+app.use("/api/perso", personalizedMealController);
+
 const server = app.listen(
   PORT,
   console.log(`Server listening at http://localhost:${PORT}`)
