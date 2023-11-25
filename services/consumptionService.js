@@ -65,6 +65,53 @@ const consumptionService = {
     return await Consumption.findByIdAndDelete(consumptionId);
   },
 
+  async getConsumptionsByDate(user,date){
+      try {
+        // Split the date string into components
+        const [month, day, year] = date.split("-");
+    
+        // Create a new Date object using the components
+        const today = new Date(`${year}-${month}-${day}`);
+    
+        // Check if the date is valid before proceeding
+        if (isNaN(today.getTime())) {
+          throw new Error("Invalid date format");
+        }
+    
+        const todaysring =
+          today.getFullYear() +
+          "-" +
+          (today.getMonth() + 1).toString().padStart(2, "0") +
+          "-" +
+          today.getDate().toString().padStart(2, "0");
+    
+        const meals = ["breakfast", "lunch", "snacks", "dinner"];
+
+        let consumptions = await Consumption.find({
+          consumptionDate: { $gte: todaysring },
+          user: user,
+        });
+
+        for (const meal of meals) {
+          if (!consumptions.some((consumption) => consumption.meal === meal)) {
+            const newConsumption = new Consumption({
+              mealType: meal,
+              consumptionDate: new Date(),
+              user: user,
+              total:0
+            });
+            await newConsumption.save();
+            consumptions.push(newConsumption);
+          }
+        }
+        
+        return consumptions;
+      } catch (error) {
+        console.error("Error in getConsumptionsByDate:", error);
+        throw error;
+      }
+    },
+
   async getNutritionFactsToday(user, date) {
     try {
       // Split the date string into components
