@@ -1,33 +1,23 @@
 const User = require("../models/User");
+
+
 const userService = {
   async createUser(
-    nom,
-    prenom,
-    email,
-    password,
-    age,
-    sex,
-    poids,
-    taille
+    data
     
   ) {
     
-      const oldUser = await User.findOne({ email });
+      const oldUser = await User.findOne({ email:data.email });
       if (oldUser) {
         throw new Error("User already exists");
       }
-      const newUser = await User.create({
-        nom,
-        prenom,
-        email,
-        password,
-        age,
-        sex,
-        poids,
-        taille,
-        date: Date.now(),
-      });
+      const newUser = await User.create(
+        data
+        
+      );
       const savedUser = await newUser.save();
+     
+     
       return savedUser;
     
   },
