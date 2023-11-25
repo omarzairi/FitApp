@@ -23,4 +23,14 @@ ObjectifController.get('/getObjectifByUserId/:id',protectUser,async_handler(asyn
         res.status(400).json({message:"Objectif not found"});
     }
 }));
+
+ObjectifController.put('/updateObjectif/:id',protectUser,async_handler(async(req,res)=>{
+    try{
+        const objectif=await ObjectifService.updateObjectif(req.params.id,req.body);
+    res.status(200).json(objectif);
+    }
+    catch(error){
+        res.status(400).json({message:"Objectif not found"});
+    }
+}));
 module.exports=ObjectifController;
