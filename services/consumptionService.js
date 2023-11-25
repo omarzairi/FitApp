@@ -78,22 +78,18 @@ const consumptionService = {
           throw new Error("Invalid date format");
         }
     
-        const todaysring =
-          today.getFullYear() +
-          "-" +
-          (today.getMonth() + 1).toString().padStart(2, "0") +
-          "-" +
-          today.getDate().toString().padStart(2, "0");
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
     
         const meals = ["breakfast", "lunch", "snacks", "dinner"];
 
         let consumptions = await Consumption.find({
-          consumptionDate: { $gte: todaysring },
+          consumptionDate: { $gte: today, $lt: tomorrow },
           user: user,
         });
 
         for (const meal of meals) {
-          if (!consumptions.some((consumption) => consumption.meal === meal)) {
+          if (!consumptions.some((consumption) => consumption.mealType === meal)) {
             const newConsumption = new Consumption({
               mealType: meal,
               consumptionDate: new Date(),
