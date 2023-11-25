@@ -1,33 +1,23 @@
 const User = require("../models/User");
+const serviceProgress=require("../services/progressService");
+
 const userService = {
   async createUser(
-    nom,
-    prenom,
-    email,
-    password,
-    age,
-    sex,
-    poids,
-    taille
+    data
     
   ) {
     
-      const oldUser = await User.findOne({ email });
+      const oldUser = await User.findOne({ email:data.email });
       if (oldUser) {
         throw new Error("User already exists");
       }
       const newUser = await User.create({
-        nom,
-        prenom,
-        email,
-        password,
-        age,
-        sex,
-        poids,
-        taille,
+        data,
         date: Date.now(),
       });
       const savedUser = await newUser.save();
+      await serviceProgress.createProgress({user:savedUser._id,listePoids:[{poids:savedUser.poids,date:Date.now()}]});
+     
       return savedUser;
     
   },

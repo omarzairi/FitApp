@@ -1,7 +1,7 @@
 const Progress=require('../models/Progress');
 const progressService={
     async createProgress(progressData){
-        const newProgress=new Progress(progressData);
+        const newProgress= Progress.create(progressData);
         return await newProgress.save();
     },
     async addProgressToAUser(userId,progressData){
