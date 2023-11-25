@@ -52,7 +52,11 @@ class AlimentService {
         $regex: new RegExp(searchCriteria.servingUnit, "i"),
       };
     }
-
+    if (searchCriteria.category){
+      query.category = {
+        $regex: new RegExp(searchCriteria.category, "i"),
+      }
+    }
     try {
       const aliments = await Aliment.find(query).exec();
       return aliments;

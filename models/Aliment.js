@@ -41,6 +41,10 @@ const alimentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,
+    required: true,
+  },
 });
 
 const Aliment = mongoose.model("Aliment", alimentSchema);
