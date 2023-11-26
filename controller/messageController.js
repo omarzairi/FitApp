@@ -169,9 +169,12 @@ messageControl.get(
       const uniqueUsers = [];
       const uniqueUsersMessages = [];
       messages.forEach((msg) => {
+console.log(msg.users[1])
         if (!uniqueUsers.includes(msg.users[1])) {
           uniqueUsers.push(msg.users[1]);
           uniqueUsersMessages.push(msg);
+          console.log(uniqueUsersMessages)
+
         }
       });
       const uniqueUsersMessagesWithNames = await Promise.all(
