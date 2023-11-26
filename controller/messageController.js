@@ -170,7 +170,6 @@ messageControl.get(
   asyncHandler(async (req, res) => {
     try {
       const coach = await Coach.findById(req.coach);
-
       const from = coach._id;
       const messages = await Message.find({
         users: { $in: [from.toString()] },
@@ -178,13 +177,16 @@ messageControl.get(
       const uniqueUsers = [];
       const uniqueUsersMessages = [];
       messages.forEach((msg) => {
-        if (!uniqueUsers.includes(msg.users[1])) {
-          uniqueUsers.push(msg.users[1]);
+        const userId =
+          msg.users[0].toString() === from.toString()
+            ? msg.users[1]
+            : msg.users[0];
+        if (!uniqueUsers.includes(userId)) {
+          uniqueUsers.push(userId);
           uniqueUsersMessages.push(msg);
-          console.log(uniqueUsersMessages)
-
         }
       });
+
       const uniqueUsersMessagesWithNames = await Promise.all(
         uniqueUsersMessages.map(async (msg) => {
           const userId =
@@ -204,7 +206,6 @@ messageControl.get(
       );
       res.json(uniqueUsersMessagesWithNames);
     } catch (err) {
-      console.log(err);
       res.status(500).json({ message: "Internal server error" });
     }
   })
