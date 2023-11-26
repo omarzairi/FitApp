@@ -72,4 +72,18 @@ coachController.delete(
   })
 );
 
+
+coachController.get(
+  "/loggedCoach",
+  protectCoach,
+  asyncHandler(async (req, res) => {
+    try {
+      const coach = await coachService.getCoachById(req.coach);
+      res.status(200).json({ ...coach._doc });
+    } catch (error) {
+      res.status(400).json({ message: "Coach not found" });
+    }
+  })
+);
+
 module.exports = coachController;
