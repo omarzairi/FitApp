@@ -10,7 +10,7 @@ userController.post(
     try {
       const user = await userService.createUser(req.body);
       const token = jwt(user);
-      res.status(200).json({ user: { ...user._doc },token:token });
+      res.status(200).json({  ...user._doc ,token:token });
     } catch (error) {
       console.error(error); // Log the actual error for debugging purposes
       res.status(400).json({ message: error.message || "Error adding user" });
