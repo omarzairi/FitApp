@@ -17,7 +17,7 @@ consumptionController.get(
 );
 
 consumptionController.get(
-  "/:id",
+  "/getbyid/:id",
   asyncHandler(async (req, res) => {
     try {
       const consumption = await consumptionService.getConsumptionById(
@@ -35,6 +35,17 @@ consumptionController.get(
     }
   })
 );
+
+consumptionController.post("/getTodayConsumptions",protectUser, asyncHandler(async (req, res) => {
+  try{
+    const consumptions = await consumptionService.getConsumptionsByDate(req.user._id,req.body.date);
+    res.status(200).json(consumptions);
+  }
+  catch(error){
+    res.status(404).json({ message: error.message });
+  }
+}))
+
 
 consumptionController.put(
   "/:id/aliment/:alimentId",
@@ -94,12 +105,12 @@ consumptionController.delete(
   })
 );
 
-consumptionController.get(
+consumptionController.post(
   "/nutritionFactsToday/:user",
   asyncHandler(async (req, res) => {
     try {
       const nutritionFacts = await consumptionService.getNutritionFactsToday(
-        req.params.user
+        req.params.user,req.body.date
       );
       res.status(200).json(nutritionFacts);
     } catch (error) {

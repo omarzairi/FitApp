@@ -1,33 +1,23 @@
 const User = require("../models/User");
+
+
 const userService = {
   async createUser(
-    nom,
-    prenom,
-    email,
-    password,
-    age,
-    sex,
-    poids,
-    taille
+    data
     
   ) {
     
-      const oldUser = await User.findOne({ email });
+      const oldUser = await User.findOne({ email:data.email });
       if (oldUser) {
         throw new Error("User already exists");
       }
-      const newUser = await User.create({
-        nom,
-        prenom,
-        email,
-        password,
-        age,
-        sex,
-        poids,
-        taille,
-        date: Date.now(),
-      });
+      const newUser = await User.create(
+        data
+        
+      );
       const savedUser = await newUser.save();
+     
+     
       return savedUser;
     
   },
@@ -54,14 +44,7 @@ const userService = {
   },
   async updateUser(
     id,
-    nom,
-    prenom,
-    email,
-    password,
-    age,
-    sex,
-    poids,
-    taille,
+    data
     
   ) {
     
@@ -69,18 +52,31 @@ const userService = {
       if (!user) {
         throw new Error("User not found");
       }
-      user.nom = nom;
-      user.prenom = prenom;
-      user.email = email;
-      user.password = password;
-      user.age = age;
-      user.sex = sex;
-      user.poids = poids;
-      user.taille = taille;
       
-      const savedUser = await user.save();
-      return savedUser;
-    
+      
+      return await User.findByIdAndUpdate(id,data,{
+      new: true,
+    });
   },
+  async deleteUser(id) {
+    const user = await User.findById(id);
+    if(!user){
+      throw new Error("User not found");
+    }
+    return await User.findByIdAndDelete(id);
+  },
+  async changePassword(id, data) {
+    const user= await User.findById(id);
+    if(!user){
+      throw new Error("User not found");
+    }
+    if(user.password !== data.oldPassword){
+      throw new Error("Old password is incorrect");
+    }
+    return await User.findByIdAndUpdate(id, {password: data.newPassword}, {
+      new: true,
+    });
+  }
+
 };
 module.exports = userService;

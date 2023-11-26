@@ -130,14 +130,23 @@ messageControl.get(
       const uniqueUsers = [];
       const uniqueUsersMessages = [];
       messages.forEach((msg) => {
-        if (!uniqueUsers.includes(msg.users[1])) {
-          uniqueUsers.push(msg.users[1]);
+        const coachId =
+          msg.users[0].toString() === from.toString()
+            ? msg.users[1]
+            : msg.users[0];
+        if (!uniqueUsers.includes(coachId)) {
+          uniqueUsers.push(coachId);
           uniqueUsersMessages.push(msg);
         }
       });
+
       const uniqueUsersMessagesWithNames = await Promise.all(
         uniqueUsersMessages.map(async (msg) => {
-          const user = await Coach.findById(msg.users[1]);
+          const coachId =
+            msg.users[0].toString() === from.toString()
+              ? msg.users[1]
+              : msg.users[0];
+          const user = await Coach.findById(coachId);
           return {
             id: user._id,
             fullName: user.prenom + " " + user.nom,
@@ -169,7 +178,6 @@ messageControl.get(
       const uniqueUsers = [];
       const uniqueUsersMessages = [];
       messages.forEach((msg) => {
-console.log(msg.users[1])
         if (!uniqueUsers.includes(msg.users[1])) {
           uniqueUsers.push(msg.users[1]);
           uniqueUsersMessages.push(msg);
@@ -179,7 +187,11 @@ console.log(msg.users[1])
       });
       const uniqueUsersMessagesWithNames = await Promise.all(
         uniqueUsersMessages.map(async (msg) => {
-          const user = await User.findById(msg.users[0]);
+          const userId =
+            msg.users[0].toString() === from.toString()
+              ? msg.users[1]
+              : msg.users[0];
+          const user = await User.findById(userId);
           return {
             id: user._id,
             fullName: user.prenom + " " + user.nom,
