@@ -34,7 +34,7 @@ const consumptionService = {
         consumption.aliments.push(objet);
       }
       consumption.total += aliment.calories * quantity;
-      return await consumption.save();
+      return await consumption.save().populate("aliments.aliment");
     } else {
       console.log(consumptionId, "   ", alimentId, "   ", quantity);
       throw new Error("Consumption or aliment not found");
@@ -65,85 +65,87 @@ const consumptionService = {
     return await Consumption.findByIdAndDelete(consumptionId);
   },
 
-  async getConsumptionsByDate(user,date){
-      try {
-        // Split the date string into components
-        const [month, day, year] = date.split("-");
-    
-        // Create a new Date object using the components
-        const today = new Date(`${year}-${month}-${day}`);
-    
-        // Check if the date is valid before proceeding
-        if (isNaN(today.getTime())) {
-          throw new Error("Invalid date format");
-        }
-    
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-    
-        const meals = ["breakfast", "lunch", "snacks", "dinner"];
+  async getConsumptionsByDate(user, date) {
+    try {
+      // Split the date string into components
+      const [month, day, year] = date.split("-");
 
-        let consumptions = await Consumption.find({
-          consumptionDate: { $gte: today, $lt: tomorrow },
-          user: user,
-        });
+      // Create a new Date object using the components
+      const today = new Date(`${year}-${month}-${day}`);
 
-        for (const meal of meals) {
-          if (!consumptions.some((consumption) => consumption.mealType === meal)) {
-            const newConsumption = new Consumption({
-              mealType: meal,
-              consumptionDate: new Date(),
-              user: user,
-              total:0
-            });
-            await newConsumption.save();
-            consumptions.push(newConsumption);
-          }
-        }
-        
-        return consumptions;
-      } catch (error) {
-        console.error("Error in getConsumptionsByDate:", error);
-        throw error;
+      // Check if the date is valid before proceeding
+      if (isNaN(today.getTime())) {
+        throw new Error("Invalid date format");
       }
-    },
+
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      const meals = ["breakfast", "lunch", "snacks", "dinner"];
+
+      let consumptions = await Consumption.find({
+        consumptionDate: { $gte: today, $lt: tomorrow },
+        user: user,
+      });
+
+      for (const meal of meals) {
+        if (
+          !consumptions.some((consumption) => consumption.mealType === meal)
+        ) {
+          const newConsumption = new Consumption({
+            mealType: meal,
+            consumptionDate: new Date(),
+            user: user,
+            total: 0,
+          });
+          await newConsumption.save();
+          consumptions.push(newConsumption);
+        }
+      }
+
+      return consumptions;
+    } catch (error) {
+      console.error("Error in getConsumptionsByDate:", error);
+      throw error;
+    }
+  },
 
   async getNutritionFactsToday(user, date) {
     try {
       // Split the date string into components
       const [month, day, year] = date.split("-");
-  
+
       // Create a new Date object using the components
       const today = new Date(`${year}-${month}-${day}`);
-  
+
       // Check if the date is valid before proceeding
       if (isNaN(today.getTime())) {
         throw new Error("Invalid date format");
       }
-  
+
       const todaysring =
         today.getFullYear() +
         "-" +
         (today.getMonth() + 1).toString().padStart(2, "0") +
         "-" +
         today.getDate().toString().padStart(2, "0");
-  
+
       const consumptions = await Consumption.find({
         consumptionDate: { $gte: todaysring },
         user: user.toString(),
       });
-  
+
       let totalCalories = 0;
       let totalProtein = 0;
       let totalCarbs = 0;
       let totalFat = 0;
       let totalSugar = 0;
       let totalServingSize = 0;
-  
+
       await Promise.all(
         consumptions.map(async (consumption) => {
           totalCalories += consumption.total;
-  
+
           await Promise.all(
             consumption.aliments.map(async (aliment) => {
               const alimentData = await Aliment.findById(aliment.aliment);
@@ -157,7 +159,7 @@ const consumptionService = {
           );
         })
       );
-  
+
       return {
         totalCalories,
         totalProtein,
@@ -170,8 +172,7 @@ const consumptionService = {
       console.error("Error in getNutritionFactsToday:", error);
       throw error;
     }
-  }
-  
+  },
 };
 
 module.exports = consumptionService;
