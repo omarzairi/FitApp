@@ -93,6 +93,23 @@ const coachService = {
       throw error;
     }
   },
+  async searchCoach(searchCriteria) {
+    const query = {};
+
+    if (searchCriteria.nom) {
+      query.nom = { $regex: new RegExp(searchCriteria.nom, "i") };
+    }
+    if (searchCriteria.prenom) {
+      query.prenom = { $regex: new RegExp(searchCriteria.prenom, "i") };
+    }
+
+    try {
+      const coaches = await Coach.find(query).exec();
+      return coaches;
+    } catch (error) {
+      throw new Error("Error searching coaches");
+    }
+  }
 };
 
 module.exports = coachService;
