@@ -18,7 +18,7 @@ const consumptionService = {
     console.log(consumption, "0000000", aliment);
 
     if (consumption != null && aliment != null) {
-      const objet = { aliment: alimentId, quantity: quantity };
+      const objet = { aliment: alimentId, quantity: Number(quantity) };
 
       if (
         consumption.aliments.find(
@@ -27,14 +27,18 @@ const consumptionService = {
       ) {
         consumption.aliments.forEach((alimenttab) => {
           if (alimenttab.aliment == alimentId) {
-            alimenttab.quantity += quantity;
+            alimenttab.quantity += Number(quantity);
           }
         });
       } else {
         consumption.aliments.push(objet);
       }
-      consumption.total += aliment.calories * quantity;
-      return await consumption.save().populate("aliments.aliment");
+      consumption.total += Number(aliment.calories) * Number(quantity);
+      const savedConsumption = await consumption.save();
+      const populatedConsumption = await Consumption.findById(
+        savedConsumption._id
+      ).populate("aliments.aliment");
+      return populatedConsumption;
     } else {
       console.log(consumptionId, "   ", alimentId, "   ", quantity);
       throw new Error("Consumption or aliment not found");
