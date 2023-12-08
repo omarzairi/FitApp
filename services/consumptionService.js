@@ -85,7 +85,7 @@ const consumptionService = {
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
 
-      const meals = ["breakfast", "lunch", "snacks", "dinner"];
+      const meals = ["breakfast", "lunch", "snack", "dinner"];
 
       let consumptions = await Consumption.find({
         consumptionDate: { $gte: today, $lt: tomorrow },
