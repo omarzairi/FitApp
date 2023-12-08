@@ -4,6 +4,8 @@ const alimentSchema = new mongoose.Schema({
   idInApi: {
     type: String,
     required: false,
+    //make it unique please only once cant be duplicated
+    unique: true,
   },
   name: {
     type: String,
