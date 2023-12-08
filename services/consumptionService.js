@@ -86,7 +86,7 @@ const consumptionService = {
       let consumptions = await Consumption.find({
         consumptionDate: { $gte: today, $lt: tomorrow },
         user: user,
-      });
+      }).populate("aliments.aliment");
 
       for (const meal of meals) {
         if (
