@@ -12,7 +12,7 @@ userController.post(
       const token = jwt(user);
       res.status(200).json({  user:user ,token:token });
     } catch (error) {
-      console.error(error); // Log the actual error for debugging purposes
+      console.error(error);
       res.status(400).json({ message: error.message || "Error adding user" });
     }
   })
@@ -51,13 +51,6 @@ userController.put(
       const user = await userService.updateUser(
         req.params.id,
         req.body
-        
-        
-        
-        
-        
-        
-        
       );
       res.status(200).json(user);
     } catch (error) {

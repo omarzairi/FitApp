@@ -40,6 +40,9 @@ app.use("/api/progress", progressController);
 const personalizedMealController = require("./controller/personalizedMealController");
 app.use("/api/perso", personalizedMealController);
 
+const workoutController = require("./controller/workoutController");
+app.use("/api/workouts", workoutController);
+
 const server = app.listen(
   PORT,
   console.log(`Server listening at http://localhost:${PORT}`)
