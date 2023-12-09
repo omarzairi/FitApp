@@ -69,7 +69,7 @@ io.on("connection", (socket) => {
       socket.broadcast.emit("msg-recieve", {
         from: data.from,
         to: data.to,
-        message: data.msg,
+        message: data.message,
       });
     }
   });
