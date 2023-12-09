@@ -27,7 +27,7 @@ userController.post(
       );
       res.status(200).json({ user: user, token: jwt(user) });
     } catch (error) {
-      res.status(400).json({ message:"User already exists" });
+      res.status(400).json({ message:"User doesn't exist" });
     }
   })
 );
