@@ -16,7 +16,12 @@ coachController.post(
       req.body.password,
       req.body.age,
       req.body.sex,
-      req.body.image
+      req.body.image,
+      req.body.description,
+      req.body.yearsOfExperience,
+      req.body.speciality,
+      req.body.price,
+      req.body.phoneNumber
     );
 
     res.status(200).json({ ...coach._doc, token: jwt(coach) });
@@ -52,7 +57,12 @@ coachController.put(
       req.body.password,
       req.body.age,
       req.body.sex,
-      req.body.image
+      req.body.image,
+      req.body.description,
+      req.body.yearsOfExperience,
+      req.body.speciality,
+      req.body.price,
+      req.body.phoneNumber
     );
     res.status(200).json(coach);
   })

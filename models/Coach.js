@@ -33,6 +33,26 @@ const coachSchema = mongoose.Schema(
         image:{
             type:String,
             
+        },
+        description:{
+            type:String,
+            
+        },
+        yearsOfExperience:{
+            type:Number,
+            
+        },
+        speciality:{
+            type:String,
+            
+        },
+        price:{
+            type:Number,
+            
+        },
+        phoneNumber:{
+            type:Number,
+            
         }
     }
     
