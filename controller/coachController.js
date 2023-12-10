@@ -107,5 +107,19 @@ coachController.get(
     }
   })
 );
-
+coachController.put(
+  "/changePassword/:id",
+  protectCoach,
+  asyncHandler(async (req, res) => {
+    try {
+      const coach = await coachService.changePassword(
+        req.params.id,
+        req.body.password
+      );
+      res.status(200).json(coach);
+    } catch (error) {
+      res.status(400).json({ message: "Coach not found" });
+    }
+  })
+)
 module.exports = coachController;

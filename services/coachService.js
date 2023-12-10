@@ -119,6 +119,18 @@ const coachService = {
     } catch (error) {
       throw new Error("Error searching coaches");
     }
+  },
+  async changePassword(id, data) {
+    const coach= await Coach.findById(id);
+    if(!coach){
+      throw new Error("User not found");
+    }
+    if(coach.password !== data.oldPassword){
+      throw new Error("Old password is incorrect");
+    }
+    return await User.findByIdAndUpdate(id, {password: data.newPassword}, {
+      new: true,
+    });
   }
 };
 
