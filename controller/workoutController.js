@@ -64,4 +64,19 @@ workoutController.get(
         }
     })
 )
+
+workoutController.post(
+    "/search/querysearch",
+    asyncHandler(async (req,res)=>{
+        try{
+            const workouts = await workoutService.searchWorkout(req.body);
+            res.status(200).json(workouts);
+        }
+        catch(error){
+            console.log(error);
+            res.status(500).json({message:"Workout not found"});
+        }
+    })
+)
+
 module.exports = workoutController;

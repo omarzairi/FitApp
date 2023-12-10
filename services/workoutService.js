@@ -53,5 +53,26 @@ class WorkoutService{
             await userWorkList.save();
             return userWorkList;
     }
+
+    async searchWorkout(searchCriteria) {
+        const query = {};
+    
+        if (searchCriteria.name) {
+          query.name = { $regex: new RegExp(searchCriteria.name, "i") };
+        }
+        if (searchCriteria.category){
+          query.category = {
+            $regex: new RegExp(searchCriteria.category, "i"),
+          }
+        }
+        try {
+          const workouts = await Workout.find(query).exec();
+          return workouts;
+        } catch (error) {
+          throw new Error("Error searching aliments");
+        }
+      }
+
+
 }
 module.exports = new WorkoutService();
