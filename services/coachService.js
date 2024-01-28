@@ -1,7 +1,20 @@
 const Coach = require("../models/Coach");
 
 const coachService = {
-  async createCoach(nom, prenom, email, password, age, sex, image) {
+  async createCoach(
+    nom,
+    prenom,
+    email,
+    password,
+    age,
+    sex,
+    image,
+    description,
+    yearsOfExperience,
+    speciality,
+    price,
+    phoneNumber
+  ) {
     try {
       const oldCoach = await Coach.findOne({ email });
       if (oldCoach) {
@@ -16,6 +29,11 @@ const coachService = {
         age,
         sex,
         image,
+        description,
+        yearsOfExperience,
+        speciality,
+        price,
+        phoneNumber,
       });
 
       const savedCoach = await newCoach.save();
@@ -51,7 +69,21 @@ const coachService = {
     }
   },
 
-  async updateCoach(id, nom, prenom, email, password, age, sex, image) {
+  async updateCoach(
+    id,
+    nom,
+    prenom,
+    email,
+    password,
+    age,
+    sex,
+    image,
+    description,
+    yearsOfExperience,
+    speciality,
+    price,
+    phoneNumber
+  ) {
     try {
       const coach = await Coach.findById(id);
       if (!coach) {
@@ -65,6 +97,11 @@ const coachService = {
       coach.age = age;
       coach.sex = sex;
       coach.image = image;
+      coach.description = description;
+      coach.yearsOfExperience = yearsOfExperience;
+      coach.speciality = speciality;
+      coach.price = price;
+      coach.phoneNumber = phoneNumber;
 
       const savedCoach = await coach.save();
       return savedCoach;
@@ -109,7 +146,23 @@ const coachService = {
     } catch (error) {
       throw new Error("Error searching coaches");
     }
-  }
+  },
+  async changePassword(id, data) {
+    const coach = await Coach.findById(id);
+    if (!coach) {
+      throw new Error("User not found");
+    }
+    if (coach.password !== data.oldPassword) {
+      throw new Error("Old password is incorrect");
+    }
+    return await User.findByIdAndUpdate(
+      id,
+      { password: data.newPassword },
+      {
+        new: true,
+      }
+    );
+  },
 };
 
 module.exports = coachService;

@@ -10,9 +10,9 @@ userController.post(
     try {
       const user = await userService.createUser(req.body);
       const token = jwt(user);
-      res.status(200).json({  user:user ,token:token });
+      res.status(200).json({ user: user, token: token });
     } catch (error) {
-      console.error(error); // Log the actual error for debugging purposes
+      console.error(error);
       res.status(400).json({ message: error.message || "Error adding user" });
     }
   })
@@ -27,7 +27,7 @@ userController.post(
       );
       res.status(200).json({ user: user, token: jwt(user) });
     } catch (error) {
-      res.status(400).json({ message:"User already exists" });
+      res.status(400).json({ message: "User doesn't exist" });
     }
   })
 );
@@ -48,17 +48,7 @@ userController.put(
   protectUser,
   asyncHandler(async (req, res) => {
     try {
-      const user = await userService.updateUser(
-        req.params.id,
-        req.body
-        
-        
-        
-        
-        
-        
-        
-      );
+      const user = await userService.updateUser(req.params.id, req.body);
       res.status(200).json(user);
     } catch (error) {
       res.status(400).json({ message: "User not found" });
@@ -96,16 +86,12 @@ userController.put(
   protectUser,
   asyncHandler(async (req, res) => {
     try {
-      const user = await userService.changePassword(
-        req.params.id,
-        req.body
-      );
+      const user = await userService.changePassword(req.params.id, req.body);
       res.status(200).json(user);
     } catch (error) {
       res.status(400).json({ message: "User not found" });
     }
   })
 );
-
 
 module.exports = userController;

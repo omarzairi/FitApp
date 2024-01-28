@@ -16,7 +16,12 @@ coachController.post(
       req.body.password,
       req.body.age,
       req.body.sex,
-      req.body.image
+      req.body.image,
+      req.body.description,
+      req.body.yearsOfExperience,
+      req.body.speciality,
+      req.body.price,
+      req.body.phoneNumber
     );
 
     res.status(200).json({ ...coach._doc, token: jwt(coach) });
@@ -26,7 +31,10 @@ coachController.post(
 coachController.post(
   "/loginCoach",
   asyncHandler(async (req, res) => {
-    const coach = await coachService.loginCoach(req.body.email, req.body.password);
+    const coach = await coachService.loginCoach(
+      req.body.email,
+      req.body.password
+    );
     res.status(200).json({ ...coach._doc, token: jwt(coach) });
   })
 );
@@ -52,7 +60,12 @@ coachController.put(
       req.body.password,
       req.body.age,
       req.body.sex,
-      req.body.image
+      req.body.image,
+      req.body.description,
+      req.body.yearsOfExperience,
+      req.body.speciality,
+      req.body.price,
+      req.body.phoneNumber
     );
     res.status(200).json(coach);
   })
@@ -84,7 +97,6 @@ coachController.delete(
   })
 );
 
-
 coachController.get(
   "/loggedCoach",
   protectCoach,
@@ -97,5 +109,19 @@ coachController.get(
     }
   })
 );
-
+coachController.put(
+  "/changePassword/:id",
+  protectCoach,
+  asyncHandler(async (req, res) => {
+    try {
+      const coach = await coachService.changePassword(
+        req.params.id,
+        req.body.password
+      );
+      res.status(200).json(coach);
+    } catch (error) {
+      res.status(400).json({ message: "Coach not found" });
+    }
+  })
+);
 module.exports = coachController;
