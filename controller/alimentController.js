@@ -7,6 +7,7 @@ const alimentController = express.Router();
 alimentController.get(
   "/",
   asyncHandler(async (req, res) => {
+    console.log("helloooo");
     try {
       const aliments = await alimentService.getAllAliments();
       res.status(200).json(aliments);
@@ -74,7 +75,6 @@ alimentController.delete(
     }
   })
 );
-
 
 alimentController.post(
   "/search",

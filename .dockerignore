@@ -1,0 +1,26 @@
+# Ignore node_modules directory
+node_modules
+
+# Ignore npm debug log
+npm-debug.log
+
+# Ignore application logs
+logs
+
+# Ignore Docker build context files
+.dockerignore
+.dockerignore.example
+
+# Ignore development files
+Dockerfile.dev
+docker-compose.dev.yml
+
+# Ignore editor-specific files
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
